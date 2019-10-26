@@ -1,0 +1,49 @@
+version: "3.7"
+
+x-common:
+  &default-common
+  restart: always
+  env_file: ./cli/timezone.env
+  networks:
+    - backend
+    # - frontend
+  # dns:
+  #   - ${DNS:-114.114.114.114}
+
+x-common-label:
+  &default-common-label
+  labels:
+    - ${LNMP_DOMAIN:-com.khs1994.lnmp}=true
+    - ${LNMP_DOMAIN:-com.khs1994.lnmp}.app.env=development
+
+services:
+  git-sync:
+    << : *default-common
+    << : *default-common-label
+    image: "${LNMP_BUILD_DOCKER_IMAGE_PREFIX:-khs1994}/git-sync:v${LNMP_GIT_SYNC_VERSION:-3.1.2}"
+    # ports:
+    #   - "${LNMP_GIT_SYNC_HTTPS_PORT:-0.0.0.0:443}:443"
+    #   - "${LNMP_GIT_SYNC_HTTP_PORT:-0.0.0.0:80}:80"
+    volumes:
+      - git-sync-data:/root/git:cached
+      # - ./vendor/${LREW_GIT_SYNC_VENDOR:-lrew}/git-sync/config/${LNMP_GIT-SYNC_CONF:-example.conf}:/usr/local/etc/example.conf:cached
+      # - ./log/example:/usr/local/apache2/logs:delegated
+    # env_file:
+      # - ./vendor/${LREW_GIT_SYNC_VENDOR:-lrew}/git-sync/.env.example
+      # - ./vendor/${LREW_GIT_SYNC_VENDOR:-lrew}/git-sync/.env
+    working_dir: /app
+    command:
+      - --repo=${LNMP_GIT_SYNC_REPO:?LNMP_GIT_SYNC_REPO is empty, must set in ~/lnmp/.env}
+      - --branch=${LNMP_GIT_SYNC_BRANCH:-master}
+      - --wait=${LNMP_GIT_SYNC_WAIT:-30}
+      - --dest=git-sync
+    # required vars ${VAR?-VAR is empty, must set in ~/lnmp/.env}
+    # required vars ${VAR?VAR is not set, must set in ~/lnmp/.env}
+    # networks:
+    #   - frontend
+    # depends_on:
+    #   - nginx
+    user: root:root
+
+volumes:
+  git-sync-data:

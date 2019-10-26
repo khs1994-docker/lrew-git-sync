@@ -1,0 +1,12 @@
+version: "3.7"
+
+x-common:
+  &default-common
+  labels:
+    - ${LNMP_DOMAIN:-com.khs1994.lnmp}=true
+    - ${LNMP_DOMAIN:-com.khs1994.lnmp}.app.env=development
+
+services:
+  git-sync:
+    << : *default-common
+    image: gcr.azk8s.cn/google-containers/git-sync:v${LNMP_GIT_SYNC_VERSION:-3.1.2}
