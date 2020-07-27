@@ -9,4 +9,4 @@ x-common:
 services:
   git-sync:
     << : *default-common
-    image: gcr.azk8s.cn/google-containers/git-sync:v${LNMP_GIT_SYNC_VERSION:-3.1.2}
+    image: ccr.ccs.tencentyun.com/khs1994/git-sync:v${LNMP_GIT_SYNC_VERSION:-3.1.6}

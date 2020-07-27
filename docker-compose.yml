@@ -20,7 +20,7 @@ services:
   git-sync:
     << : *default-common
     << : *default-common-label
-    image: "${LNMP_BUILD_DOCKER_IMAGE_PREFIX:-khs1994}/git-sync:v${LNMP_GIT_SYNC_VERSION:-3.1.2}"
+    image: "${LNMP_BUILD_DOCKER_IMAGE_PREFIX:-khs1994}/git-sync:v${LNMP_GIT_SYNC_VERSION:-3.1.6}"
     # ports:
     #   - "${LNMP_GIT_SYNC_HTTPS_PORT:-0.0.0.0:443}:443"
     #   - "${LNMP_GIT_SYNC_HTTP_PORT:-0.0.0.0:80}:80"
